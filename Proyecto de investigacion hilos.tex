@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Proyecto de investigación-Hilos}
+\author{Juan Daniel Gonzalez Puerta}
+\date{Julio 2020}
+
+\begin{document}
+
+\maketitle
+
+\section*{¿Qué es una hilo en el contexto de los microprocesadores?
+}
+Un Hilo es un medio para administrar las tareas de un procesador de manera más óptima, básicamente es un flujo de control de los datos. Los hilos son una tarea que puede ser ejecutada en paralelo con otra tarea; teniendo en cuenta lo que es propio de cada hilo es el contador de programa, la pila de ejecución y el estado de la CPU (incluyendo el valor de los registros).Es común confundir hilos y núcleos sin embargo una manera fácil de poder distinguir entre estos dos es que los núcleos se encargan de ejecutar las tareas y los hilos las administran.[1]\\
+
+
+\section*{¿Se puede hablar de la historia de los hilos?
+}
+Los hilos hicieron su aparición bajo el nombre de “tareas” en el año 1967 y el nombre hilo fue acuñado por Victor A. Vyssotsky, sin embargo hablar sobre la historia de los hilos es hablar sobre su implementación por las empresas desarrolladoras de microprocesadores, como IBM, INTEL, AMD, etc. A finales de 1960 IMB incluyo soporte para multi-hilo. Hasta principios del siglo XXI, la mayoría de los equipos de escritorio tenían una sola CPU de un solo núcleo, sin soporte para subprocesos. En 2002, Intel agregó soporte para multi-hilos simultáneo al procesador Pentium 4, bajo el nombre hyper-threading y en 2005 AMD introdujon el procesador Athlon 64 X2 de doble núcleo. [2]\\
+
+
+\section*{¿Que tipo de hilos existen?}
+Existen tres tipos de interrupciones, las cuales son:\\
+
+•	Hilos a nivel de usuario: este tipo de hilos se realizan en la aplicación o programa y el nucleo no es consiente de la excistencia de estos hilos, no necesita cambio de privilegios del modo kernel por lo tanto se evita la sobre carga de cambio de modo, tambien pueden ejecutarse en cualquier sistema operativo pero una aplicación multi-hilo no puede aprovechar las ventajas de los multiprocesadores.\\
+
+•	Hilos a nivel Kernel: en este tipo de hilos el trabajo de gestión lo realiza el kernel Para la gestión de hilos en el núcleo Windows 2000 ,Linux y OS/2 utilizan este método. Una de las ventajas de los hilos a nivel de kernel es que puede planificar simultáneamente múltiples hilos del mismo proceso en múltiples procesadores y una desventaja como mencione anteriormente es que el paso de control de un hilo a otro requiere cambio de modo.\\
+
+
+•	Algunos sistemas operativos ofrecen la combinación tanto a nivel de usuario como a nivel kernel. Los múltiples hilos a nivel de usuario de una sola aplicación se asocian con varios a nivel kernel El programador puede ajustar el número de hilos kernel para cada aplicación y máquina para obtener el mejor resultado global. Si bien no hay muchos ejemplos de sistemas de este tipo si se pueden encontrar implementaciones híbridas auxiliares en algunos sistemas como por ejemplo las planificaciones de activaciones de hilos que emplea la librería NetBSD native POSIX threads.[3]\\
+
+\section*{¿Cómo se hace la implementación de hilos a nivel de hardware?}
+
+Como los hilos son un flujo de control de datos no son algo físico por lo tanto es el soporte a nivel hardware el que debe ser implementado, El objetivo de la compatibilidad con hardware multi-hilo es permitir un cambio rápido entre un subproceso bloqueado y otro subproceso listo para ejecutarse. Para lograr este objetivo, el costo de hardware es replicar los registros visibles del programa, así como algunos registros de control de procesador. el hardware adicional permite que cada subproceso se comporte como si se estuviera ejecutando solo y no compartiendo ningún recurso de hardware con otros subprocesos, minimizando la cantidad de cambios de software necesarios dentro de la aplicación y el sistema operativo.[4]
+
+\section*{¿Cómo se implementan los hilos por software?}
+
+Lo que hace es que emplea un algoritmo de planificación llamado Round-robin el cual almacena todos los hilos que estén activos en una lista circular. Este algoritmo asigna a cada hilo unos tiempos similares y los va ejecutando cada uno de los hilos sin ninguna prioridad entre ellos. [5]\\
+
+Para poder implementar esto en el Sistema Operativo, se diseña una biblioteca para el manejo de hilos donde el kernel envía una interrupción a la biblioteca de hilos para avisarle del comienzo y la finalización de la entrada y poder re planificar al hilo que solicitó la llamado al sistema; de ese modo no se necesitaria bloquear el proceso, ya que la biblioteca de hilos bloquearía al hilo solicitante del llamado al sistema y podría pasar otro a ejecución. Cuando recibe la interrupción avisando de la finalización del llamado al sistema, pondrá al hilo como listo para ejecutar en la cola de planificación de la biblioteca. Todos estos cambios de estado se producirán sin bloquear el proceso. Otra manera de implementar es realizar una estructura de datos a la que denomina Procesador Virtual encargada de la relación entre el hilo a nivel de Kernel y los Hilos a nivel de usuario implementada en el espacio de direccionamiento del usuario junto con memoria compartida entre el kernel y la biblioteca de usuario. Esto le permite el manejo de interrupciones, señales, timers y planificación entre otros [6]\\
+
+Para estos tipos de implementaciones es importante aclarar dos cosas, la primera es que el lenguaje de programación es indiferente a estos métodos, ya que no hay una instrucción necesaria propia de un lenguaje de programación y la segunda es que el hardware debe estar en la capacidad de poder realizar tareas multi-hilos.
+
+\section*{Bibliografia}
+
+\small 
+
+\begin{verbatim}
+ 
+[1]Arquitecturas multihilo. (2020). Retrieved 13 July 2020, from 
+https://www.exabyteinformatica.com/uoc/Informatica/Arquitecturas
+_de_computadores_avanzadas/Arquitecturas_de_computadores_avanzad
+as_(Modulo_3).pdf
+
+[2]Thread (computing). (2020). Retrieved 13 July 2020, from http
+s://en.wikipedia.org/wiki/Thread_(computing)#History
+
+[3] Hilos. (2020). Retrieved 13 July 2020, from https://www.fing.
+edu.uy/tecnoinf/mvd/cursos/so/material/teo/so05-hilos.pdf
+
+[4 ]Wikipedia contributors. (2020, January 2). Multithreading(com
+puter architecture). In Wikipedia, The Free Encyclopedia. Retriev
+ed, July 13, 2020, from
+https://en.wikipedia.org/w/index.php?title=Multithreading_(compute
+r_architecture)&oldid=933653974
+
+[5] Gestión de hilos de ejecución. (2020). Retrieved 13 July 2020, 
+from http://bibing.us.es/proyectos/abreproy/11320/fichero/Capitulo
+s%252F13.pdf
+
+[6] La implementación de estructuras de hilos de usuario en un sistema 
+operativo didáctico. (2018).http://sedici.unlp.edu.ar/bitstream/handle
+/10915/21228/Documento_completo.pdf?sequence=1&isAllowed=y [Ebook].
+
+\end{verbatim}
+
+
+\end{document}
